@@ -1,0 +1,139 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Squareshift Ecommerce Store - Cart APIs",
+    "version": "1.0.0",
+    "title": "Ecommerce API",
+    "license": {
+      "name": "Squareshift",
+      "url": "https://squareshift.co"
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ],
+  "paths": {
+    "/cart/item": {
+      "post": {
+        "tags": ["Cart"],
+        "description": "Add item to cart",
+        "summary": "Add item to cart",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "query",
+            "description": "ID of the product to be added to the cart",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Invalid Product Id"
+          }
+        }
+      }
+    },
+    "/cart/items": {
+      "get": {
+        "tags": ["Cart"],
+        "description": "Get items from the cart",
+        "summary": "Get all cart items",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Cart is empty"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "delete": {
+        "tags": ["Cart"],
+        "description": "Empty the cart",
+        "summary": "Empty cart items",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Cart is empty"
+          }
+        }
+      }
+    },
+    "/cart/checkout-value": {
+      "get": {
+        "tags": ["Cart"],
+        "description": "Get calculated total amount for all products in cart with shipping charge.",
+        "summary": "Need to be implemented",
+        "parameters": [
+          {
+            "name": "shipping_postal_code",
+            "in": "query",
+            "description": "get calculated shipping cost",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckoutValue"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cart is empty"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CheckoutValue": {
+        "type": "object",
+        "properties": {
+          "response": {
+            "type": "object",
+            "properties": {
+              "shipping_cost": {
+                "type": "number"
+              },
+              "product_cost": {
+                "type": "number"
+              },
+              "checkout_value": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "example": {
+          "status": 200,
+          "response": {
+            "shipping_cost": "90.00",
+            "product_cost": "652.83",
+            "checkout_value": "742.83"
+          }
+        }
+      }
+    }
+  }
+}
